@@ -18,10 +18,11 @@ exports.getAllProducts = (req, res, next) => {
 };
 
 exports.getOneProduct = (req, res, next) => {
+  //console.log('getOneProduct')
   Product.findById(req.params.id).then(
     (product) => {
       if (!product) {
-        return res.status(404).send(new Error('Product not found!'));
+        return res.status(404).send(new Error('Produit non trouvé!'));
       }
       product.imageUrl = req.protocol + '://' + req.get('host') + '/images/' + product.imageUrl;
       res.status(200).json(product);
@@ -47,6 +48,8 @@ exports.getOneProduct = (req, res, next) => {
  *
  */
 exports.orderProducts = (req, res, next) => {
+  console.log('data received');
+  console.log(req.body);
   if (!req.body.contact ||
       !req.body.contact.firstName ||
       !req.body.contact.lastName ||
@@ -54,7 +57,8 @@ exports.orderProducts = (req, res, next) => {
       !req.body.contact.city ||
       !req.body.contact.email ||
       !req.body.products) {
-    return res.status(400).send(new Error('Bad request!'));
+        console.log('test échoué');
+        return res.status(400).send(new Error('Bad request!'));
   }
   let queries = [];
   for (let productId of req.body.products) {
